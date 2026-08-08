@@ -42,7 +42,7 @@ const NotFoundPage = () => {
                     </Link>
 
                     <Link
-                        href="/all-appointments"
+                        href="/appointments"
                         className="inline-flex items-center justify-center gap-2 rounded-lg border border-border px-5 py-2.5 text-sm font-medium transition-colors hover:bg-muted"
                     >
                         <Search className="h-4 w-4" />

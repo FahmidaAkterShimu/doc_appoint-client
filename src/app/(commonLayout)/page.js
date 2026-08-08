@@ -1,7 +1,9 @@
+import Appointment from "@/components/Appointment";
+
 export default function Home() {
   return (
     <div>
-      Home Page
+      <Appointment />
     </div>
   );
 }

@@ -13,7 +13,7 @@ const Navbar = () => {
     const isActive = (path) => pathName === path;
     const navLinks = [
         { name: 'Home', href: '/' },
-        { name: 'All Appointments', href: '/all-appointments' },
+        { name: 'All Appointments', href: '/appointments' },
         { name: 'Dashboard', href: '/dashboard' }
     ]
 
