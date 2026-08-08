@@ -79,6 +79,11 @@ const Navbar = () => {
                     <div className='hidden md:flex items-center gap-3'>
                         <ThemeToggler />
 
+
+                        {isPending && (
+                            <div className='h-10 w-24 animate-pulse rounded-lg bg-primary/10' />
+                        )}
+
                         {/* ── DESKTOP: Logged In ── */}
                         {!isPending && user && (
                             <div className='flex items-center gap-3'>
