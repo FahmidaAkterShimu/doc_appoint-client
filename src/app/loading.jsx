@@ -1,13 +1,17 @@
 import { CalendarDays, Stethoscope } from "lucide-react";
+import Image from "next/image";
 
 const LoadingPage = () => {
     return (
         <div className="min-h-screen flex flex-col items-center justify-center bg-background text-foreground">
             {/* Logo */}
             <div className="flex items-center gap-2 mb-12">
-                <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-primary shadow-md shadow-primary/20">
-                    <Stethoscope className="h-6 w-6 text-primary-foreground" />
-                </div>
+                <Image
+                    src={"/favicon.png"}
+                    alt='logo'
+                    width={30}
+                    height={30}
+                />
 
                 <h1 className="text-2xl font-bold">
                     Doc<span className="text-primary">Appoint</span>
