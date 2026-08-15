@@ -94,7 +94,7 @@ const Navbar = () => {
                                         <Avatar>
                                             <Avatar.Image referrerPolicy='no-referrer' alt={user?.name} src={user?.image} />
                                             <Avatar.Fallback>
-                                                {user?.name ? user.name.charAt(0).toUpperCase() : 'U'}
+                                                {user?.name ? user.name.slice(0, 2).toUpperCase() : 'U'}
                                             </Avatar.Fallback>
                                         </Avatar>
 
@@ -139,7 +139,7 @@ const Navbar = () => {
                                 <Avatar>
                                     <Avatar.Image referrerPolicy='no-referrer' alt={user?.name} src={user?.image} />
                                     <Avatar.Fallback>
-                                        {user?.name ? user.name.charAt(0).toUpperCase() : 'U'}
+                                        {user?.name ? user.name.slice(0, 2).toUpperCase() : 'U'}
                                     </Avatar.Fallback>
                                 </Avatar>
                             </Link>
@@ -204,7 +204,7 @@ const Navbar = () => {
                                     Login
                                 </Link>
                                 <Link
-                                    href="/login"
+                                    href="/register"
                                     onClick={() => setIsOpen(false)}
                                     className="text-sm font-semibold bg-primary text-background px-4.5 py-3.5 rounded-lg hover:bg-teal-600 transition-colors"
                                 >
