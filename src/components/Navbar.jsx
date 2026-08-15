@@ -105,7 +105,7 @@ const Navbar = () => {
                                 {/* Logout */}
                                 <button
                                     onClick={handleLogout}
-                                    className="text-sm font-semibold bg-primary text-white px-4 py-2 rounded-lg hover:bg-teal-600 transition-colors"
+                                    className="text-sm font-semibold bg-primary text-background px-4 py-2 rounded-lg hover:bg-teal-600 transition-colors"
                                 >
                                     Logout
                                 </button>
@@ -123,7 +123,7 @@ const Navbar = () => {
 
                                 <Link
                                     href="/register"
-                                    className="text-sm font-semibold bg-primary text-white px-4 py-2 rounded-lg hover:bg-teal-600 transition-colors"
+                                    className="text-sm font-semibold bg-primary text-background px-4 py-2 rounded-lg hover:bg-teal-600 transition-colors"
                                 >
                                     Register
                                 </Link>

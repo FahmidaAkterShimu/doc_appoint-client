@@ -25,7 +25,7 @@ const DoctorsCard = ({ doctor }) => {
                     <FiveStar />
                     <span className='text-xs text-slate-500 ml-1'>{rating} ({reviews})</span>
                 </div>
-                <h3 className='text-lg text-slate-900 mb-0.5'>
+                <h3 className='text-lg text-foreground mb-0.5'>
                     {name}
                 </h3>
                 <p className='text-xs text-slate-500 mb-1'>
