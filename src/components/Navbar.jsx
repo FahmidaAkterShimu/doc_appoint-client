@@ -6,6 +6,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import ThemeToggler from '../lib/ThemeToggler';
 import { authClient } from '@/lib/auth-client';
 import { Avatar } from '@heroui/react';
+import { toast } from 'react-toastify';
 
 const Navbar = () => {
     // route
@@ -93,7 +94,7 @@ const Navbar = () => {
                                         <Avatar>
                                             <Avatar.Image referrerPolicy='no-referrer' alt={user?.name} src={user?.image} />
                                             <Avatar.Fallback>
-                                                {user.name.charAt(1)}
+                                                {user?.name ? user.name.charAt(0).toUpperCase() : 'U'}
                                             </Avatar.Fallback>
                                         </Avatar>
 
@@ -138,7 +139,7 @@ const Navbar = () => {
                                 <Avatar>
                                     <Avatar.Image referrerPolicy='no-referrer' alt={user?.name} src={user?.image} />
                                     <Avatar.Fallback>
-                                        {user.name.charAt(1)}
+                                        {user?.name ? user.name.charAt(0).toUpperCase() : 'U'}
                                     </Avatar.Fallback>
                                 </Avatar>
                             </Link>
@@ -182,7 +183,7 @@ const Navbar = () => {
                                 key={link.name}
                                 href={link.href}
                                 onClick={() => setIsOpen(false)}
-                                className={`text-sm font-medium transition-colors ${isActive(link.href) || (link.name === 'Home' && pathname === '/')
+                                className={`text-sm font-medium transition-colors ${isActive(link.href) || (link.name === 'Home' && pathName === '/')
                                     ? 'text-primary'
                                     : 'text-foreground hover:text-teal-600'
                                     }`}

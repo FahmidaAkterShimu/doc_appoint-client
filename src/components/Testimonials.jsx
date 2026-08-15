@@ -8,13 +8,13 @@ const Testimonials = () => {
             <section className='max-w-7xl mx-auto px-4 sm:px-6 py-16'>
                 <div className='text-center mb-12'>
                     <span className='text-primary text-sm font-semibold tracking-widest uppercase block mb-2'>Testimonials</span>
-                    <h2 className='font-serif text-3xl text-slate-900'>
+                    <h2 className='font-serif text-3xl text-foreground'>
                         What Our Patients Say
                     </h2>
                 </div>
 
                 <div className='grid grid-cols-1 md:grid-cols-3 gap-6'>
-                    <div className='bg-white rounded-2xl p-6 border border-slate-100 shadow-sm'>
+                    <div className='bg-background rounded-2xl p-6 border border-border shadow-sm'>
                         <FiveStar />
                         <p className='text-slate-600 text-sm leading-relaxed mb-5'>
                             DocAppoint made finding the right cardiologist incredibly easy. Booked within minutes!
@@ -28,11 +28,11 @@ const Testimonials = () => {
                                 height={36}
                                 className='w-9 h-9 rounded-full object-cover'
                             />
-                            <span className='text-sm font-semibold text-slate-800'>Rahim Uddin</span>
+                            <span className='text-sm font-semibold text-foreground'>Rahim Uddin</span>
                         </div>
                     </div>
 
-                    <div className='bg-white rounded-2xl p-6 border border-slate-100 shadow-sm'>
+                    <div className='bg-background rounded-2xl p-6 border border-border shadow-sm'>
                         <FiveStar />
                         <p className='text-slate-600 text-sm leading-relaxed mb-5'>
                             The booking process was seamless and the doctor was exactly as described. Highly recommended.
@@ -46,11 +46,11 @@ const Testimonials = () => {
                                 height={36}
                                 className='w-9 h-9 rounded-full object-cover'
                             />
-                            <span className='text-sm font-semibold text-slate-800'>Fatema Khatun</span>
+                            <span className='text-sm font-semibold text-foreground'>Fatema Khatun</span>
                         </div>
                     </div>
 
-                    <div className='bg-white rounded-2xl p-6 border border-slate-100 shadow-sm'>
+                    <div className='bg-background rounded-2xl p-6 border border-border shadow-sm'>
                         <FiveStar />
                         <p className='text-slate-600 text-sm leading-relaxed mb-5'>
                             Managing my family&apos;s appointments in one place is a game changer. Excellent platform.
@@ -64,7 +64,7 @@ const Testimonials = () => {
                                 height={36}
                                 className='w-9 h-9 rounded-full object-cover'
                             />
-                            <span className='text-sm font-semibold text-slate-800'>Shariful Islam</span>
+                            <span className='text-sm font-semibold text-foregrounded'>Shariful Islam</span>
                         </div>
                     </div>
                 </div>

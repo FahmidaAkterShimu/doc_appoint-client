@@ -22,6 +22,7 @@ export default function RootLayout({ children }) {
     <html
       lang="en"
       className={`${dmSans.variable} ${dmSerif.variable} h-full antialiased`}
+      suppressHydrationWarning
     >
       <body>
         {children}
