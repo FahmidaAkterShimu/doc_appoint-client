@@ -21,6 +21,10 @@
   --secondary: #ccfbf1;
   --secondary-foreground: #134e4a;
 
+  /* Teal Gradient */
+  --gradient-from: #f0fdfa;
+  --gradient-to: rgb(204 251 241 / 0.5);
+
   --muted: #f1f5f9;
   --muted-foreground: #64748b;
 
@@ -48,6 +52,9 @@
 
   --secondary: #134e4a;
   --secondary-foreground: #ccfbf1;
+  
+  --gradient-from: #123b3a;
+  --gradient-to: rgb(15 118 110 / 0.25);
 
   --muted: #1e293b;
   --muted-foreground: #94a3b8;
@@ -75,6 +82,9 @@
 
   --color-secondary: var(--secondary);
   --color-secondary-foreground: var(--secondary-foreground);
+
+  --color-gradient-from: var(--gradient-from);
+  --color-gradient-to: var(--gradient-to);
 
   --color-muted: var(--muted);
   --color-muted-foreground: var(--muted-foreground);

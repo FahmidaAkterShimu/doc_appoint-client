@@ -2,9 +2,10 @@ import Image from 'next/image';
 import React from 'react';
 import FiveStar from './FiveStar';
 import { Button } from '@heroui/react';
+import Link from 'next/link';
 
 const DoctorsCard = ({ doctor }) => {
-    const { name, specialty, image, experience, description, hospital, location, fee, reviews, rating } = doctor
+    const { _id, name, specialty, image, experience, description, hospital, location, fee, reviews, rating } = doctor
 
     return (
         <div className='bg-background rounded-2xl border border-border shadow-sm hover:shadow-md transition-shadow overflow-hidden flex flex-col'>
@@ -42,7 +43,9 @@ const DoctorsCard = ({ doctor }) => {
                     <span className='text-sm font-semibold text-primary'>
                         ৳{fee} / visit
                     </span>
-                    <Button className='text-sm font-semibold bg-primary text-background px-4 py-2 rounded-lg hover:bg-teal-600 transition-colors'>View Details</Button>
+                    <Link href={`/appointments/${_id}`}>
+                        <Button className='text-sm font-semibold bg-primary text-background px-4 py-2 rounded-lg hover:bg-teal-600 transition-colors'>View Details</Button>
+                    </Link>
                 </div>
             </div>
         </div>

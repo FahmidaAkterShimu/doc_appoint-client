@@ -43,10 +43,10 @@ const RegisterPage = () => {
         }
 
         if (data) {
-            toast.success("Account created successfully!");
+            toast.success("Account created successfully! Please login");
 
             setTimeout(() => {
-                router.push("/");
+                router.push("/login");
             }, 500);
         }
     };
