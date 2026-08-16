@@ -1,4 +1,4 @@
-import { Button } from '@heroui/react';
+import BookingModal from '@/components/BookingModal';
 import { ChevronLeft } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -49,7 +49,9 @@ const DetailsPage = async ({ params }) => {
                             </div>
                         </div>
                     </div>
+
                     <div className='p-8 grid md:grid-cols-3 gap-8'>
+                        {/* Left side */}
                         <div className='md:col-span-2 space-y-6'>
                             <div>
                                 <h2 className='font-semibold text-foreground mb-2 text-base'>About</h2>
@@ -88,6 +90,8 @@ const DetailsPage = async ({ params }) => {
                                 </div>
                             </div>
                         </div>
+
+                        {/* Right side */}
                         <div className='bg-linear-to-br from-gradient-from to-gradient-to border border-teal-100 dark:border-teal-800 rounded-2xl p-6 sticky top-24'>
                             <h3 className='font-semibold text-foreground mb-2 text-lg'>Consultation Fee</h3>
                             <h1 className='font-serif text-4xl text-primary mb-4'>৳{fee}</h1>
@@ -106,7 +110,7 @@ const DetailsPage = async ({ params }) => {
                                     Free cancellation
                                 </li>
                             </ul>
-                            <Button className='w-full bg-primary text-background font-semibold py-3 rounded-xl hover:bg-teal-600 transition-colors mt-6'>Book Appointment</Button>
+                            <BookingModal doctor={doctor} />
                         </div>
                     </div>
                 </div>
