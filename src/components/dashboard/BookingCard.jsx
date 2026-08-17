@@ -1,4 +1,5 @@
 import { Button } from '@heroui/react';
+import { BookingDeleteAlert } from './BookingDeleteAlert';
 
 const BookingCard = ({ booking, onUpdate, onDelete }) => {
     return (
@@ -70,12 +71,8 @@ const BookingCard = ({ booking, onUpdate, onDelete }) => {
                     Update
                 </Button>
 
-                <Button
-                    onPress={() => onDelete(booking)}
-                    className='px-4 py-2 text-sm font-semibold text-rose-600 bg-rose-50 rounded-lg hover:bg-rose-100 transition-colors'
-                >
-                    Delete
-                </Button>
+                <BookingDeleteAlert booking={booking}
+                    onDelete={onDelete} />
 
             </div>
         </div>

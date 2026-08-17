@@ -5,9 +5,51 @@ import DashboardHeader from "./DashboardHeader";
 import DashboardTabs from "./DashboardTabs";
 import BookingCard from "./BookingCard";
 import ProfileCard from "./ProfileCard";
+import UpdateBookingModal from "./UpdateBookingModal";
 
 const DashboardClient = ({ user, bookings }) => {
     const [activeTab, setActiveTab] = useState("bookings");
+
+    const [bookingList, setBookingList] = useState(bookings);
+
+    const [selectedBooking, setSelectedBooking] = useState(null);
+    const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
+
+    const handleUpdate = (booking) => {
+        setSelectedBooking(booking);
+        setIsUpdateModalOpen(true);
+    };
+
+    const handleSaveUpdate = async (updatedBooking) => {
+        console.log("Updated booking:", updatedBooking);
+
+    };
+
+    const handleDelete = async (booking) => {
+        try {
+            const res = await fetch(
+                `http://localhost:5000/booking/${booking._id}`,
+                {
+                    method: "DELETE",
+                    headers: { "content-type": "application/json" }
+                }
+            );
+            const data = await res.json();
+
+            if (!res.ok) {
+                throw new Error(data.message || "Failed to delete booking");
+            }
+
+            window.location.reload();
+
+            setBookingList((prev) =>
+                prev.filter((item) => item._id !== booking._id)
+            );
+
+        } catch (error) {
+            console.error("Delete error:", error);
+        }
+    };
 
     return (
         <>
@@ -33,14 +75,28 @@ const DashboardClient = ({ user, bookings }) => {
                             </h2>
                         </div>
                         {bookings.length > 0 ? (
-                            <div className="space-y-4 mt-6">
-                                {bookings.map((booking) => (
-                                    <BookingCard
-                                        key={booking._id}
-                                        booking={booking}
-                                    />
-                                ))}
-                            </div>
+                            <>
+                                <div className="space-y-4 mt-6">
+                                    {bookings.map((booking) => (
+                                        <BookingCard
+                                            key={booking._id}
+                                            booking={booking}
+                                            onUpdate={handleUpdate}
+                                            onDelete={handleDelete}
+                                        />
+                                    ))}
+                                </div>
+                                <UpdateBookingModal
+                                    key={selectedBooking?._id}
+                                    booking={selectedBooking}
+                                    isOpen={isUpdateModalOpen}
+                                    onClose={() => {
+                                        setIsUpdateModalOpen(false);
+                                        setSelectedBooking(null);
+                                    }}
+                                    onSave={handleSaveUpdate}
+                                />
+                            </>
                         ) : (
                             <div className="text-center py-20 bg-background rounded-2xl border border-border">
                                 <div className="text-5xl mb-4">

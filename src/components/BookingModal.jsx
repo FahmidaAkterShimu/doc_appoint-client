@@ -12,6 +12,8 @@ const BookingModal = ({ doctor }) => {
 
     const [isOpen, setIsOpen] = useState(false);
 
+    const today = new Date().toISOString().split("T")[0];
+
     const [formData, setFormData] = useState({
         patientName: "",
         gender: "Male",
@@ -35,6 +37,7 @@ const BookingModal = ({ doctor }) => {
         const bookingData = {
             doctorId: doctor._id,
             doctorName: doctor.name,
+            doctorAvailability: doctor.availability,
             userId: user?.id,
             userName: user?.name,
             userImage: user?.image,
@@ -198,6 +201,7 @@ const BookingModal = ({ doctor }) => {
                                             name="appointmentDate"
                                             value={formData.appointmentDate}
                                             onChange={handleChange}
+                                            min={today}
                                             required
                                             className="w-full h-11 px-3 rounded-lg border border-border bg-background text-foreground text-sm outline-none focus:ring-2 focus:ring-primary/20"
                                         />
