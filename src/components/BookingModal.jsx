@@ -53,7 +53,7 @@ const BookingModal = ({ doctor }) => {
         const data = await res.json();
 
         if (data) {
-            toast.success("✓Appointment booked successfully!")
+            toast.success("Appointment booked successfully!")
         }
 
         setIsOpen(false);
