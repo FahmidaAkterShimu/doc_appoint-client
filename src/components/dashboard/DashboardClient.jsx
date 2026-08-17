@@ -6,8 +6,11 @@ import DashboardTabs from "./DashboardTabs";
 import BookingCard from "./BookingCard";
 import ProfileCard from "./ProfileCard";
 import UpdateBookingModal from "./UpdateBookingModal";
+import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
 
 const DashboardClient = ({ user, bookings }) => {
+    const router = useRouter();
     const [activeTab, setActiveTab] = useState("bookings");
 
     const [bookingList, setBookingList] = useState(bookings);
@@ -21,8 +24,43 @@ const DashboardClient = ({ user, bookings }) => {
     };
 
     const handleSaveUpdate = async (updatedBooking) => {
-        console.log("Updated booking:", updatedBooking);
+        try {
+            const res = await fetch(
+                `http://localhost:5000/booking/${updatedBooking._id}`,
+                {
+                    method: "PATCH",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        patientName: updatedBooking.patientName,
+                        gender: updatedBooking.gender,
+                        phone: updatedBooking.phone,
+                        appointmentDate: updatedBooking.appointmentDate,
+                        timeSlot: updatedBooking.timeSlot,
+                    }),
+                }
+            );
 
+            const data = await res.json();
+
+            if (!res.ok) {
+                throw new Error(
+                    data.message || "Failed to update booking"
+                );
+            }
+
+            toast.success("Appointment updated successfully!");
+
+            setIsUpdateModalOpen(false);
+            setSelectedBooking(null);
+
+            router.refresh();
+
+        } catch (error) {
+            console.error("Update error:", error);
+            toast.error(error.message || "Failed to update appointment");
+        }
     };
 
     const handleDelete = async (booking) => {
@@ -40,7 +78,9 @@ const DashboardClient = ({ user, bookings }) => {
                 throw new Error(data.message || "Failed to delete booking");
             }
 
-            window.location.reload();
+            toast.warning("Appointment deleted!");
+
+            router.refresh();
 
             setBookingList((prev) =>
                 prev.filter((item) => item._id !== booking._id)
