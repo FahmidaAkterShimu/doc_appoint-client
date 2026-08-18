@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { authClient } from "@/lib/auth-client";
 
 const slides = [
     {
@@ -64,6 +65,9 @@ const slides = [
 ];
 
 const Banner = () => {
+    const { data: session } = authClient.useSession();
+    const user = session?.user;
+
     const [currentSlide, setCurrentSlide] = useState(0);
 
     // Auto slide
@@ -136,11 +140,14 @@ const Banner = () => {
                                 Find a Doctor
                             </Link>
 
-                            <Link
-                                href={'/register'}
-                                className="px-6 py-3 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 text-white font-semibold transition-colors">
-                                Get Started Free
-                            </Link>
+                            {!user && (
+                                <Link
+                                    href="/register"
+                                    className="px-6 py-3 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 text-white font-semibold transition-colors"
+                                >
+                                    Get Started Free
+                                </Link>
+                            )}
                         </div>
                     </div>
 

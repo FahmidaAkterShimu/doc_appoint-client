@@ -1,7 +1,15 @@
+import { auth } from '@/lib/auth';
+import { headers } from 'next/headers';
 import Link from 'next/link';
 import React from 'react';
 
-const Appointment = () => {
+const Appointment = async () => {
+    const session = await auth.api.getSession({
+        headers: await headers()
+    });
+
+    const user = session?.user;
+
     return (
         <div>
             <section className='bg-primary py-14 text-center'>
@@ -13,12 +21,14 @@ const Appointment = () => {
                         Join thousands of patients managing their health with DocAppoint.
                     </p>
                     <div className='flex justify-center gap-4 flex-wrap'>
-                        <Link
-                            href={'/register'}
-                            className='bg-background text-primary font-semibold px-6 py-3 rounded-xl hover:bg-teal-50 transition-colors'
-                        >
-                            Create Free Account
-                        </Link>
+                        {!user && (
+                            <Link
+                                href={'/register'}
+                                className='bg-background text-primary font-semibold px-6 py-3 rounded-xl hover:bg-teal-50 transition-colors'
+                            >
+                                Create Free Account
+                            </Link>
+                        )}
 
                         <Link
                             href={'/appointments'}
