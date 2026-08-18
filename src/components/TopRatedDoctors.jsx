@@ -3,7 +3,7 @@ import React from 'react';
 import DoctorsCard from './DoctorsCard';
 
 const TopRatedDoctors = async () => {
-    const res = await fetch("http://localhost:5000/appointments");
+    const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/appointments`);
     const doctors = await res.json();
 
     const topRatedDoctors = [...doctors]

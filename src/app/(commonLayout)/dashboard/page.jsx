@@ -9,8 +9,16 @@ const DashboardPage = async () => {
 
     const user = session?.user;
 
-    const res = await fetch(`http://localhost:5000/booking/${user?.id}`, {
-        cache: 'no-store'
+
+    // For server component token will be given like this
+    const { token } = await auth.api.getToken({
+        headers: await headers()
+    })
+
+    const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/booking/${user?.id}`, {
+        headers: {
+            authorization: `Bearer ${token}`
+        }
     });
 
     const bookings = await res.json();

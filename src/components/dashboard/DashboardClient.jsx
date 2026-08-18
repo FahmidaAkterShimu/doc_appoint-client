@@ -8,6 +8,7 @@ import ProfileCard from "./ProfileCard";
 import UpdateBookingModal from "./UpdateBookingModal";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
+import { authClient } from "@/lib/auth-client";
 
 const DashboardClient = ({ user, bookings }) => {
     const router = useRouter();
@@ -24,13 +25,17 @@ const DashboardClient = ({ user, bookings }) => {
     };
 
     const handleSaveUpdate = async (updatedBooking) => {
+        // For client component token will be given:
+        const { data: tokenData } = await authClient.token()
+
         try {
             const res = await fetch(
-                `http://localhost:5000/booking/${updatedBooking._id}`,
+                `${process.env.NEXT_PUBLIC_SERVER_URL}/booking/${updatedBooking._id}`,
                 {
                     method: "PATCH",
                     headers: {
                         "Content-Type": "application/json",
+                        authorization: `Bearer ${tokenData?.token}`
                     },
                     body: JSON.stringify({
                         patientName: updatedBooking.patientName,
@@ -64,12 +69,18 @@ const DashboardClient = ({ user, bookings }) => {
     };
 
     const handleDelete = async (booking) => {
+        // For client component token will be given:
+        const { data: tokenData } = await authClient.token()
+        
         try {
             const res = await fetch(
-                `http://localhost:5000/booking/${booking._id}`,
+                `${process.env.NEXT_PUBLIC_SERVER_URL}/booking/${booking._id}`,
                 {
                     method: "DELETE",
-                    headers: { "content-type": "application/json" }
+                    headers: {
+                        "content-type": "application/json",
+                        authorization: `Bearer ${tokenData?.token}`
+                    }
                 }
             );
             const data = await res.json();

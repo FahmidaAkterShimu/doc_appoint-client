@@ -1,5 +1,7 @@
 import BookingModal from '@/components/BookingModal';
+import { auth } from '@/lib/auth';
 import { ChevronLeft } from 'lucide-react';
+import { headers } from 'next/headers';
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
@@ -9,7 +11,16 @@ import { IoStar } from 'react-icons/io5';
 const DetailsPage = async ({ params }) => {
     const { id } = await params;
 
-    const res = await fetch(`http://localhost:5000/appointments/${id}`);
+    // For server component token will be given like this
+    const { token } = await auth.api.getToken({
+        headers: await headers()
+    })
+
+    const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/appointments/${id}`, {
+        headers: {
+            authorization: `Bearer ${token}`
+        }
+    });
     const doctor = await res.json()
 
     const { name, specialty, image, experience, availability, description, hospital, location, fee, reviews, rating } = doctor

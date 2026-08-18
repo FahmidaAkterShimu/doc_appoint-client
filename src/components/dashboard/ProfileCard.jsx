@@ -5,6 +5,7 @@ import React, { useState } from "react";
 import UpdateProfileModal from "./UpdateProfileModal";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
+import { authClient } from "@/lib/auth-client";
 
 const ProfileCard = ({ user, bookings }) => {
     const router = useRouter();
@@ -17,13 +18,17 @@ const ProfileCard = ({ user, bookings }) => {
     });
 
     const handleSaveProfile = async (updatedData) => {
+        // For client component token will be given:
+        const { data: tokenData } = await authClient.token()
+
         try {
             const res = await fetch(
-                `http://localhost:5000/user/${user.id}`,
+                `${process.env.NEXT_PUBLIC_SERVER_URL}/user/${user.id}`,
                 {
                     method: "PATCH",
                     headers: {
                         "Content-Type": "application/json",
+                        authorization: `Bearer ${tokenData?.token}`
                     },
                     body: JSON.stringify(updatedData),
                 }

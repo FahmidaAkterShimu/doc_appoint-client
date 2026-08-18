@@ -4,7 +4,7 @@ import { Search } from 'lucide-react';
 
 const AppointmentsPage = async () => {
 
-    const res = await fetch("http://localhost:5000/appointments");
+    const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/appointments`);
     const doctors = await res.json();
 
     return (
@@ -17,7 +17,7 @@ const AppointmentsPage = async () => {
                     <p className='text-slate-500 text-base'>Browse our network of verified specialists and book your appointment.</p>
                 </div>
             </div>
-            
+
             <SortDoctors doctors={doctors} />
         </div>
     );
