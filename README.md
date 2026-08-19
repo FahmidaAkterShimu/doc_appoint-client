@@ -395,13 +395,13 @@ Example:
 
 ![Home Page](./public/UI/home.png)
 
-### Doctor Details
+### All Appointments
 
 ![Appointments](./public/UI/appointments.png)
 
 ### My Bookings
 
-![Bookings](./screenshots/dashboard-bookings.png)
+![Bookings](./public/UI/dashboard-bookings.png)
 
 ### My Profile
 
