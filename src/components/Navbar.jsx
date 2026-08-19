@@ -183,7 +183,7 @@ const Navbar = () => {
                     <div className="md:hidden flex items-center gap-2">
 
                         {!isPending && user && (
-                            <Link href="/profile">
+                            <Link href="/dashboard">
                                 <Avatar>
                                     <Avatar.Image referrerPolicy='no-referrer' alt={user?.name} src={user?.image} />
                                     <Avatar.Fallback>
