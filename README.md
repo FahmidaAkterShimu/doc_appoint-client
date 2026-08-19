@@ -399,5 +399,3 @@ NEXT_PUBLIC_API_URL=https://your-backend-url.com
 ### My Profile
 
 ![Profile](./public/UI/dashboard-profile.png)
-
-```
