@@ -23,7 +23,7 @@ const ProfileCard = ({ user, bookings }) => {
 
         try {
             const res = await fetch(
-                `${process.env.NEXT_PUBLIC_SERVER_URL}/user/${user.id}`,
+                `${process.env.NEXT_PUBLIC_SERVER_URL}/user/${user._id}`,
                 {
                     method: "PATCH",
                     headers: {
