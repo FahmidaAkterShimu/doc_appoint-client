@@ -384,13 +384,6 @@ NEXT_PUBLIC_API_URL=https://your-backend-url.com
 
 ## 📸 Screenshots
 
-Add screenshots of your application here after uploading them to the repository.
-
-Example:
-
-```md
-## 📸 Screenshots
-
 ### Home Page
 
 ![Home Page](./public/UI/home.png)
