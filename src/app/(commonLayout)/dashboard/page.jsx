@@ -30,7 +30,6 @@ const DashboardPage = async () => {
             headers: {
                 authorization: `Bearer ${token}`
             },
-            cache: "no-store"
         }
     );
     const user = await userRes.json();
