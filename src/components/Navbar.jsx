@@ -1,108 +1,163 @@
-'use client'
-import Link from 'next/link';
-import React, { useState } from 'react';
-import Image from 'next/image';
-import { usePathname, useRouter } from 'next/navigation';
-import ThemeToggler from '../lib/ThemeToggler';
-import { authClient } from '@/lib/auth-client';
-import { Avatar } from '@heroui/react';
-import { toast } from 'react-toastify';
+"use client";
+
+import Link from "next/link";
+import React, { useEffect, useState } from "react";
+import Image from "next/image";
+import { usePathname, useRouter } from "next/navigation";
+import ThemeToggler from "../lib/ThemeToggler";
+import { authClient } from "@/lib/auth-client";
+import { Avatar } from "@heroui/react";
+import { toast } from "react-toastify";
 
 const Navbar = () => {
-    // route
     const pathName = usePathname();
-    const isActive = (path) => pathName === path;
-    const navLinks = [
-        { name: 'Home', href: '/' },
-        { name: 'All Appointments', href: '/appointments' },
-        { name: 'Dashboard', href: '/dashboard' }
-    ]
-
-    // User Session
-    const { data: session, isPending } = authClient.useSession();
-    const user = session?.user
-
-    // Handle Logout
     const router = useRouter();
 
+    const isActive = (path) => pathName === path;
+
+    const navLinks = [
+        { name: "Home", href: "/" },
+        { name: "All Appointments", href: "/appointments" },
+        { name: "Dashboard", href: "/dashboard" },
+    ];
+
+    // Better Auth session
+    const { data: session, isPending } = authClient.useSession();
+
+    // Latest profile data
+    const [profile, setProfile] = useState(null);
+    const [profileLoading, setProfileLoading] = useState(false);
+
+    const userId = session?.user?.id;
+
+    useEffect(() => {
+        const fetchLatestProfile = async () => {
+            const { data: tokenData } = await authClient.token()
+
+            if (!userId) {
+                setProfile(null);
+                return;
+            }
+
+            try {
+                setProfileLoading(true);
+
+                const res = await fetch(
+                    `${process.env.NEXT_PUBLIC_SERVER_URL}/user/${userId}`,
+                    {
+                        headers: {
+                            authorization: `Bearer ${tokenData?.token}`
+                        }
+                    }
+                );
+
+                const data = await res.json();
+
+                if (!res.ok) {
+                    throw new Error(data.message || "Failed to fetch profile");
+                }
+
+                setProfile(data);
+            } catch (error) {
+                console.error("Navbar profile error:", error);
+            } finally {
+                setProfileLoading(false);
+            }
+        };
+
+        fetchLatestProfile();
+    }, [userId]);
+
+
+    // Latest user
+    const user = profile || session?.user;
+
+    // Logout
     const handleLogout = async () => {
         await authClient.signOut({
             fetchOptions: {
                 onSuccess: () => {
-                    toast.success('Logged out successfully 👋');
-                    router.push('/login');
+                    toast.success("Logged out successfully 👋");
+                    setProfile(null);
+                    router.push("/login");
                     router.refresh();
                 },
             },
         });
     };
 
-    // For mobile Hamburger
+    // Mobile hamburger
     const [isOpen, setIsOpen] = useState(false);
-
 
     return (
         <div>
-            <nav className='sticky top-0 z-50 bg-background/95 backdrop-blur border-b border-border shadow-sm'>
-                <div className='max-w-7xl mx-auto px-4 sm:px-6 flex items-center justify-between h-16'>
-                    <Link href={"/"} className='flex items-center gap-2'>
+            <nav className="sticky top-0 z-50 bg-background/95 backdrop-blur border-b border-border shadow-sm">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 flex items-center justify-between h-16">
+
+                    {/* Logo */}
+                    <Link href="/" className="flex items-center gap-2">
                         <Image
-                            src={"/favicon.png"}
-                            alt='logo'
+                            src="/favicon.png"
+                            alt="logo"
                             width={30}
                             height={30}
                         />
-                        <h3 className="text-xl font-normal text-foreground tracking-tight">Doc
+
+                        <h3 className="text-xl font-normal text-foreground tracking-tight">
+                            Doc
                             <span className="text-primary">Appoint</span>
                         </h3>
                     </Link>
 
-                    {/* for large device */}
-                    <div className='hidden md:flex items-center gap-8'>
-                        {
-                            navLinks.map((link) =>
-                                <Link
-                                    key={link.name}
-                                    href={link.href}
-                                    className={`text-sm font-medium transition-colors ${isActive(link.href) || (link.name === 'Home' && pathName === '/')
-                                        ? 'text-primary font-semibold'
-                                        : 'text-foreground hover:text-teal-600'
-                                        }`}
-                                >
-                                    {link.name}
-                                </Link>
-                            )
-                        }
+                    {/* Desktop Navigation */}
+                    <div className="hidden md:flex items-center gap-8">
+                        {navLinks.map((link) => (
+                            <Link
+                                key={link.name}
+                                href={link.href}
+                                className={`text-sm font-medium transition-colors ${isActive(link.href)
+                                    ? "text-primary font-semibold"
+                                    : "text-foreground hover:text-teal-600"
+                                    }`}
+                            >
+                                {link.name}
+                            </Link>
+                        ))}
                     </div>
 
+                    {/* Desktop Right Side */}
+                    <div className="hidden md:flex items-center gap-3">
 
-                    {/* Desktop Right side */}
-                    <div className='hidden md:flex items-center gap-3'>
                         <ThemeToggler />
 
-
-                        {isPending && (
-                            <div className='h-10 w-24 animate-pulse rounded-lg bg-primary/10' />
+                        {(isPending || profileLoading) && (
+                            <div className="h-10 w-10 animate-pulse rounded-full bg-primary/10" />
                         )}
 
-                        {/* ── DESKTOP: Logged In ── */}
                         {!isPending && user && (
-                            <div className='flex items-center gap-3'>
+                            <div className="flex items-center gap-3">
 
-                                <div>
-                                    <Link href="/dashboard" className='flex items-center justify-center'>
-                                        <Avatar>
-                                            <Avatar.Image referrerPolicy='no-referrer' alt={user?.name} src={user?.image} />
-                                            <Avatar.Fallback>
-                                                {user?.name ? user.name.slice(0, 2).toUpperCase() : 'U'}
-                                            </Avatar.Fallback>
-                                        </Avatar>
+                                <Link
+                                    href="/dashboard"
+                                    className="flex items-center justify-center"
+                                >
+                                    <Avatar>
+                                        <Avatar.Image
+                                            referrerPolicy="no-referrer"
+                                            alt={user?.name}
+                                            src={user?.image}
+                                        />
 
+                                        <Avatar.Fallback>
+                                            {user?.name
+                                                ? user.name
+                                                    .slice(0, 2)
+                                                    .toUpperCase()
+                                                : "U"}
+                                        </Avatar.Fallback>
+                                    </Avatar>
+                                </Link>
 
-                                    </Link>
-                                </div>
-
-                                {/* Logout */}
                                 <button
                                     onClick={handleLogout}
                                     className="text-sm font-semibold bg-primary text-background px-4 py-2 rounded-lg hover:bg-teal-600 transition-colors"
@@ -113,7 +168,7 @@ const Navbar = () => {
                         )}
 
                         {!isPending && !user && (
-                            <div className='flex items-center gap-3'>
+                            <div className="flex items-center gap-3">
                                 <Link
                                     href="/login"
                                     className="text-sm font-medium text-foreground hover:text-teal-600 transition-colors"
@@ -131,97 +186,64 @@ const Navbar = () => {
                         )}
                     </div>
 
-                    {/* MOBILE RIGHT SIDE */}
+                    {/* Mobile */}
                     <div className="md:hidden flex items-center gap-2">
 
                         {!isPending && user && (
-                            <Link href="/profile">
+                            <Link href="/dashboard">
                                 <Avatar>
-                                    <Avatar.Image referrerPolicy='no-referrer' alt={user?.name} src={user?.image} />
+                                    <Avatar.Image
+                                        referrerPolicy="no-referrer"
+                                        alt={user?.name}
+                                        src={user?.image}
+                                    />
+
                                     <Avatar.Fallback>
-                                        {user?.name ? user.name.slice(0, 2).toUpperCase() : 'U'}
+                                        {user?.name
+                                            ? user.name
+                                                .slice(0, 2)
+                                                .toUpperCase()
+                                            : "U"}
                                     </Avatar.Fallback>
                                 </Avatar>
                             </Link>
                         )}
 
-                        {/* MOBILE HAMBURGER Button */}
                         <button
                             onClick={() => setIsOpen(!isOpen)}
                             type="button"
-                            className="inline-flex items-center justify-center p-2 rounded-md text-primary hover:bg-gray-100 focus:outline-none transition-colors"
-                            aria-controls="mobile-menu"
-                            aria-expanded={isOpen}
+                            className="inline-flex items-center justify-center p-2 rounded-md text-primary hover:bg-gray-100"
                         >
                             {isOpen ? (
-                                <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor">
-                                    <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                                <svg
+                                    className="h-6 w-6"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    strokeWidth="2"
+                                    stroke="currentColor"
+                                >
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        d="M6 18L18 6M6 6l12 12"
+                                    />
                                 </svg>
                             ) : (
-                                <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor">
-                                    <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+                                <svg
+                                    className="h-6 w-6"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    strokeWidth="2"
+                                    stroke="currentColor"
+                                >
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        d="M4 6h16M4 12h16M4 18h16"
+                                    />
                                 </svg>
                             )}
                         </button>
-
-                    </div>
-                </div>
-
-
-                {/* MOBILE MENU-DROPDOWN */}
-                <div
-                    className={`absolute top-15 left-0 w-full bg-background shadow-md md:hidden transition-all duration-200 ease-in-out rounded-lg ${isOpen ? 'opacity-100 visible translate-y-0' : 'opacity-0 invisible -translate-y-2'
-                        }`}
-                    id="mobile-menu"
-                >
-                    <div className="border-t border-border px-4 py-4 flex flex-col gap-4">
-                        <div className="flex justify-center py-2">
-                            <ThemeToggler />
-                        </div>
-                        {navLinks.map((link) => (
-                            <Link
-                                key={link.name}
-                                href={link.href}
-                                onClick={() => setIsOpen(false)}
-                                className={`text-sm font-medium transition-colors ${isActive(link.href) || (link.name === 'Home' && pathName === '/')
-                                    ? 'text-primary'
-                                    : 'text-foreground hover:text-teal-600'
-                                    }`}
-                            >
-                                {link.name}
-                            </Link>
-                        ))}
-
-
-                        {/* MOBILE LOGIN/LOGOUT Button */}
-                        {!user ? (
-                            <div className='flex items-center gap-3'>
-                                <Link
-                                    href="/login"
-                                    onClick={() => setIsOpen(false)}
-                                    className="text-sm font-medium text-foreground hover:text-teal-600 border-2 border-primary rounded-lg py-3 px-5"
-                                >
-                                    Login
-                                </Link>
-                                <Link
-                                    href="/register"
-                                    onClick={() => setIsOpen(false)}
-                                    className="text-sm font-semibold bg-primary text-background px-4.5 py-3.5 rounded-lg hover:bg-teal-600 transition-colors"
-                                >
-                                    Register
-                                </Link>
-                            </div>
-                        ) : (
-                            <button
-                                onClick={() => {
-                                    setIsOpen(false);
-                                    handleLogout();
-                                }}
-                                className="w-full bg-primary hover:bg-[#244B29] text-primary-foreground text-center py-3.5 rounded-md text-base font-semibold transition-colors shadow-sm cursor-pointer"
-                            >
-                                Logout
-                            </button>
-                        )}
                     </div>
                 </div>
             </nav>
